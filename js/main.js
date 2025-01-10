@@ -1,15 +1,5 @@
-/*const getToken = () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-        window.location.href = 'login.html'; // ถ้าไม่มี token ก็ไปหน้า login
-    }
-    return token;
-};*/
 
-// ดึงรายการธุรกรรม
 const fetchTransactions = async (category = 'all', type = 'all', startDate = '', endDate = '') => {
-    const token = getToken(); // ดึง token ที่ตรวจสอบแล้ว
-
     try {
         const url = new URL('http://localhost:3001/api/transactions');
         const params = new URLSearchParams();
@@ -20,12 +10,7 @@ const fetchTransactions = async (category = 'all', type = 'all', startDate = '',
         
         url.search = params.toString();
 
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+        const response = await fetch(url);
 
         if (!response.ok) {
             const errorData = await response.json();
@@ -79,34 +64,27 @@ const renderTransactions = (transactions) => {
 
 // ฟังก์ชันลบรายการธุรกรรม
 async function deleteTransaction(id) {
-    const token = getToken(); 
-
     try {
         const response = await fetch(`http://localhost:3001/api/transactions/${id}`, {
             method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
         });
 
         const data = await response.json();
         
         if (response.ok) {
-            alert('Transaction deleted successfully!');
             window.location.reload(); 
         } else {
             alert(data.message || 'Failed to delete transaction');
         }
     } catch (error) {
         console.error('Error deleting transaction:', error);
-        alert('An error occurred while deleting the transaction.');
     }
 }
 
 // เมื่อกดปุ่มออกจากระบบ
 document.getElementById('logout-btn').addEventListener('click', () => {
     localStorage.removeItem('token');  // ลบ token จาก localStorage
-    window.location.href = 'login.html';
+    window.location.href = 'login.html';  // ไปที่หน้า login
 });
 
 // เมื่อกดปุ่มเพิ่มรายการ
@@ -137,14 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const fetchSummary = async () => {
-    const token = getToken();
-
     try {
-        const response = await fetch('http://localhost:3001/api/summary', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+        const response = await fetch('http://localhost:3001/api/summary');
 
         if (!response.ok) {
             const errorData = await response.json();
@@ -168,7 +140,6 @@ const fetchSummary = async () => {
 
 // ฟังก์ชันแสดงยอดรวม
 const renderSummary = (summary) => {
-    // ตรวจสอบว่าค่าของ total_income และ total_expense เป็นตัวเลขก่อน
     const totalIncome = (summary.total_income && !isNaN(summary.total_income)) ? summary.total_income.toFixed(2) : '0.00';
     const totalExpense = (summary.total_expense && !isNaN(summary.total_expense)) ? summary.total_expense.toFixed(2) : '0.00';
 
