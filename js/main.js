@@ -1,11 +1,10 @@
-// ฟังก์ชันเพื่อดึง token จาก localStorage และตรวจสอบว่า token มีหรือไม่
-const getToken = () => {
+/*const getToken = () => {
     const token = localStorage.getItem('token');
     if (!token) {
         window.location.href = 'login.html'; // ถ้าไม่มี token ก็ไปหน้า login
     }
     return token;
-};
+};*/
 
 // ดึงรายการธุรกรรม
 const fetchTransactions = async (category = 'all', type = 'all', startDate = '', endDate = '') => {
@@ -92,24 +91,22 @@ async function deleteTransaction(id) {
 
         const data = await response.json();
         
-        // เพิ่มการตรวจสอบสถานะการตอบกลับ
         if (response.ok) {
-            // alert('Transaction deleted successfully!');
+            alert('Transaction deleted successfully!');
             window.location.reload(); 
         } else {
-            // แสดงข้อความผิดพลาดที่ได้รับจากเซิร์ฟเวอร์
-            // alert(data.message || 'Failed to delete transaction');
+            alert(data.message || 'Failed to delete transaction');
         }
     } catch (error) {
         console.error('Error deleting transaction:', error);
-        // alert('An error occurred while deleting the transaction.');
+        alert('An error occurred while deleting the transaction.');
     }
 }
 
 // เมื่อกดปุ่มออกจากระบบ
 document.getElementById('logout-btn').addEventListener('click', () => {
     localStorage.removeItem('token');  // ลบ token จาก localStorage
-    window.location.href = 'login.html';  // ไปที่หน้า login
+    window.location.href = 'login.html';
 });
 
 // เมื่อกดปุ่มเพิ่มรายการ
@@ -140,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const fetchSummary = async () => {
-    const token = getToken(); // ดึง token ที่ตรวจสอบแล้ว
+    const token = getToken();
 
     try {
         const response = await fetch('http://localhost:3001/api/summary', {
