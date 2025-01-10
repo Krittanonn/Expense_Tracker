@@ -17,7 +17,6 @@ document.getElementById('login-form').addEventListener('submit', async function(
 
       if (data.token) {
           localStorage.setItem('token', data.token);
-
           window.location.href = 'index.html';
       } else {
           alert('Login failed: ' + data.message);
@@ -30,5 +29,4 @@ document.getElementById('login-form').addEventListener('submit', async function(
 
 document.getElementById('signup-btn').addEventListener('click', function() {
     window.location.href = 'signup.html'; 
-  });
-  
+});
