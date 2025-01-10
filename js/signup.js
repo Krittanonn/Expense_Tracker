@@ -22,9 +22,8 @@ document.getElementById('signup-form').addEventListener('submit', function(event
     .then(data => {
         if (data.message === 'User registered successfully') {
             alert('Registration successful! Please log in.');
-            window.location.href = '/'; // Redirect to login page (ใช้ / เพื่อให้ตรงกับเซิร์ฟเวอร์ที่ตั้งค่าไว้)
         } else {
-            alert('Error: ' + data.message); // Show error message
+            alert('Error: ' + data.message);
         }
     })
     .catch(error => {
